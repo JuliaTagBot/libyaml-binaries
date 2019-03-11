@@ -5,9 +5,11 @@ matrix:
     - os: osx
       # Agree to install Apple's SDK. This is legal because Travis is
       # running this job on a MacOS platform in this matrix element.
-      env: BINARYBUILDER_AUTOMATIC_APPLE=true
+      env:
+        - BINARYBUILDER_AUTOMATIC_APPLE=true
+        - BINARYBUILDER_ROOTFS_DIR=rootfs
 julia:
-  - 1.0
+  - "1.0"
 notifications:
   email: false
 git:
