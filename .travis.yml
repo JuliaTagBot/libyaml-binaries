@@ -1,0 +1,39 @@
+language: julia
+os:
+  - linux
+julia:
+  - 1.0
+notifications:
+  email: false
+git:
+  depth: 99999999
+cache:
+  timeout: 1000
+  directories:
+    - downloads
+env:
+  global:
+    - BINARYBUILDER_DOWNLOADS_CACHE=downloads
+    - BINARYBUILDER_AUTOMATIC_APPLE=false
+sudo: required
+
+# Before anything else, get the latest versions of things
+before_script:
+  - julia -e 'using Pkg; pkg"add BinaryProvider"; pkg"add BinaryBuilder#master"; Pkg.build()'
+
+script:
+  - julia build_tarballs.jl
+
+
+deploy:
+    provider: releases
+    api_key:
+        # Note; this api_key is only valid for eschnett/libyaml-binaries; you need
+        # to make your own: https://docs.travis-ci.com/user/deployment/releases/
+        secure: AkFU5HWhrcIaieo6VLzbVSWCZN6pVSBo5vQ7EGYQfgjeiD0PIdgmg+Uuzq1thNc0Az8sjSy7cdfSvp7DFhDWlCJojDI3EQdRo7gkLHVvsBRtBqVqm2VBDx2VBGgH0WL596MUX6PhFiEhfyhjxzOJ2pyyyvHFikYyzFvjIIpI1WJXA6PgBxyvrvMWWDIY3CPHreZoMJji5AkwjmnhnHiu25o4DAZsZtH5ZtFuKXix20d6CUHoFqDvs2B5jEOlhREUFsK95rA31oEigVmCeNu5vCuX90jp/Lu9XC4TqRHvjO3pDQoRfMdHiViW+jd/Rxf0GFnY+xkBioY+n4BW+jRZt8d70vmqh7Fg8M6bzCeFogR4BdSTuiLD/CMK/VGYgCbVcw2LrDfIFHic6XtoDoBFYEnPI1BcUMbx2FUVwznVKYWjEK5y+Xo7jbUXoLahkxfsbi6MZQ3iYihjbRZ5A2hw2r9YtG1YJhkaD8+zfRdB7U87nTLkNvEkivKZiBgWMqff4fpVnYh85ZKugBOKlNMAi1n3TZpeNN8x8y//FN9VoGt71e8iw5/bK8sFoOBHL+A59XXmFwnewRs8zkVGV9Ww7Zsh+Yro5fILmGNZLQEFQaz31wz3D1epittXxqGl8xc6AMu4yfA/dsQkeUS/rjCouVzzuMkf144kyGXBIJRdHJw=
+    file_glob: true
+    file: products/*
+    skip_cleanup: true
+    on:
+        repo: eschnett/libyaml-binaries
+        tags: true
