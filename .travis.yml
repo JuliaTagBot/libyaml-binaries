@@ -2,12 +2,11 @@ language: julia
 matrix:
   include:
     - os: linux
-    - os: osx
-      # Agree to install Apple's SDK. This is legal because Travis is
-      # running this job on a MacOS platform in this matrix element.
-      env:
-        - BINARYBUILDER_AUTOMATIC_APPLE=true
-        - BINARYBUILDER_ROOTFS_DIR=rootfs
+    # Something is wrong with MacOS and QEMU; disabling it
+    # - os: osx
+    #   # Agree to install Apple's SDK. This is legal because Travis is
+    #   # running this job on a MacOS platform in this matrix element.
+    #   env: BINARYBUILDER_AUTOMATIC_APPLE=true
 julia:
   - "1.0"
 notifications:
